@@ -1,0 +1,332 @@
+/*
+ * HLTH track: privacy and support pages.
+ * Colours are the app's own: the steps of the Radix scales that generateRadixColors
+ * returns for the app's seeds (accent #1F7A3D, gray #8A8F83) on its two backgrounds.
+ * Type follows Apple's text styles at the default size, set in Inter.
+ * Nothing here loads from another site: the font is served alongside the page.
+ */
+
+@font-face {
+  font-family: "Inter";
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+  src: url("fonts/inter-400.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Inter";
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+  src: url("fonts/inter-600.woff2") format("woff2");
+}
+
+:root {
+  color-scheme: light dark;
+
+  /* Light: grayScale 12, 11, 9, 3, 6; accentScale 9, 11. */
+  --background: #f3f4f0;
+  --ink: #1e2118;
+  --muted: #52564b;
+  --faint: #787d72;
+  --surface: #e1e3df;
+  --hairline: #c7cac3;
+  --signal: #1f7a3d;
+  --signal-text: #0b6e32;
+  --on-ink: #f0f0ef;
+
+  /* Apple text styles, size / leading in points at the Large (default) setting. */
+  --large-title: 600 34px/41px "Inter", system-ui, sans-serif;
+  --title-2: 600 22px/28px "Inter", system-ui, sans-serif;
+  --title-3: 600 20px/25px "Inter", system-ui, sans-serif;
+  --headline: 600 17px/22px "Inter", system-ui, sans-serif;
+  --body: 400 17px/22px "Inter", system-ui, sans-serif;
+  --callout: 400 16px/21px "Inter", system-ui, sans-serif;
+  --subheadline: 400 15px/20px "Inter", system-ui, sans-serif;
+  --footnote: 400 13px/18px "Inter", system-ui, sans-serif;
+  --caption-1: 600 12px/16px "Inter", system-ui, sans-serif;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #111310;
+    --ink: #edeeec;
+    --muted: #b1b6ac;
+    --faint: #6b7064;
+    --surface: #222320;
+    --hairline: #393b36;
+    --signal: #1f7a3d;
+    --signal-text: #78ce8c;
+    --on-ink: #121310;
+  }
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--background);
+  color: var(--ink);
+  font: var(--body);
+  font-variant-numeric: tabular-nums;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Content Grid Layout */
+/* Reference: https://youtu.be/c13gpBrnGEw?si=Z5bziwAq9YNGxCqS */
+.content-grid {
+  --padding-inline: 1.5rem;
+  --content-max-width: 40rem;
+  --breakout-max-width: 48rem;
+  --breakout-size: calc((var(--breakout-max-width) - var(--content-max-width)) / 2);
+
+  display: grid;
+  grid-template-columns:
+    [full-width-start] minmax(var(--padding-inline), 1fr)
+    [breakout-start] minmax(0, var(--breakout-size))
+    [content-start] min(100% - (var(--padding-inline) * 2), var(--content-max-width))
+    [content-end]
+    minmax(0, var(--breakout-size)) [breakout-end]
+    minmax(var(--padding-inline), 1fr) [full-width-end];
+}
+
+.content-grid > * {
+  grid-column: content;
+}
+.content-grid > .breakout {
+  grid-column: breakout;
+}
+.content-grid > .full-width {
+  grid-column: full-width;
+}
+
+/* https://x.com/csswizardry/status/1717841334462005661 */
+img {
+  font-style: italic;
+  background-repeat: no-repeat;
+  background-size: cover;
+  shape-margin: 1rem;
+  max-width: 100%;
+  height: auto;
+  vertical-align: middle;
+}
+
+a {
+  color: var(--signal-text);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+}
+a:focus-visible {
+  outline: 2px solid var(--signal-text);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+/* The bar across the top: the app, and the two pages. */
+.masthead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding-block: 20px 16px;
+  border-bottom: 1px solid var(--hairline);
+}
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: var(--ink);
+  text-decoration: none;
+  font: var(--headline);
+}
+.brand img {
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+}
+.masthead nav {
+  display: flex;
+  gap: 4px;
+}
+.masthead nav a {
+  /* At least 44 points tall, as a tap target should be. */
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding-inline: 10px;
+  color: var(--muted);
+  text-decoration: none;
+  font: var(--subheadline);
+}
+.masthead nav a[aria-current="page"] {
+  color: var(--ink);
+  font-weight: 600;
+}
+
+.eyebrow {
+  margin: 40px 0 0;
+  color: var(--muted);
+  font: var(--caption-1);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+h1 {
+  margin: 12px 0 0;
+  font: var(--large-title);
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+}
+.lead {
+  margin: 12px 0 0;
+  color: var(--muted);
+  font: var(--body);
+  text-wrap: pretty;
+}
+.meta {
+  margin: 12px 0 0;
+  color: var(--muted);
+  font: var(--footnote);
+}
+
+/* The short version, set apart the way a group is in the app's Settings. */
+.summary {
+  margin: 28px 0 0;
+  padding: 4px 16px;
+  list-style: none;
+  border-radius: 12px;
+  background: var(--surface);
+}
+.summary li {
+  display: flex;
+  gap: 12px;
+  padding-block: 11px;
+  font: var(--body);
+}
+.summary li + li {
+  border-top: 1px solid var(--hairline);
+}
+.summary svg {
+  flex: none;
+  margin-top: 1px;
+  color: var(--signal-text);
+}
+
+h2 {
+  margin: 44px 0 0;
+  padding-top: 20px;
+  border-top: 1px solid var(--hairline);
+  font: var(--title-2);
+  letter-spacing: -0.01em;
+  text-wrap: balance;
+}
+h3 {
+  margin: 24px 0 0;
+  font: var(--headline);
+}
+p,
+ul {
+  margin: 10px 0 0;
+  text-wrap: pretty;
+}
+ul {
+  padding-left: 22px;
+}
+li + li {
+  margin-top: 6px;
+}
+strong {
+  font-weight: 600;
+}
+
+/* Questions on the support page: each opens in place. */
+details {
+  border-bottom: 1px solid var(--hairline);
+}
+/* The first question under each heading opens its group. */
+h2 + details {
+  margin-top: 16px;
+  border-top: 1px solid var(--hairline);
+}
+summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  min-height: 44px;
+  padding-block: 11px;
+  cursor: pointer;
+  list-style: none;
+  font: var(--headline);
+}
+summary::-webkit-details-marker {
+  display: none;
+}
+summary::after {
+  content: "";
+  flex: none;
+  width: 9px;
+  height: 9px;
+  margin-right: 4px;
+  border-right: 2px solid var(--faint);
+  border-bottom: 2px solid var(--faint);
+  transform: rotate(45deg) translate(-2px, -2px);
+  transition: transform 160ms cubic-bezier(0.23, 1, 0.32, 1);
+}
+details[open] summary::after {
+  transform: rotate(-135deg) translate(-2px, -2px);
+}
+summary:focus-visible {
+  outline: 2px solid var(--signal-text);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+details > :not(summary) {
+  color: var(--muted);
+}
+details > :last-child {
+  margin-bottom: 16px;
+}
+details > p:first-of-type {
+  margin-top: 0;
+}
+
+.contact {
+  margin: 28px 0 0;
+  padding: 16px;
+  border-radius: 12px;
+  background: var(--surface);
+}
+.contact p:first-child {
+  margin-top: 0;
+  font: var(--headline);
+}
+
+footer {
+  margin-block: 56px 40px;
+  padding-top: 20px;
+  border-top: 1px solid var(--hairline);
+  color: var(--muted);
+  font: var(--footnote);
+}
+footer p {
+  margin: 0;
+}
+footer p + p {
+  margin-top: 6px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  summary::after {
+    transition: none;
+  }
+}
